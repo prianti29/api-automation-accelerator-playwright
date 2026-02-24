@@ -11,7 +11,7 @@ test.describe('Pet API - Upload Image', () => {
         const petApi = new PetApi(request);
 
         // Get data from fixture
-        const { petId, additionalMetadata, fileName, mimeType } = testData;
+        const { petId, additionalMetadata, fileName, mimeType } = testData[0];
         const filePath = path.resolve(__dirname, `assets/${fileName}`);
 
         // Prepare file payload (Logic moved out of PetApi class)
@@ -36,7 +36,7 @@ test.describe('Pet API - Upload Image', () => {
         const petApi = new PetApi(request);
 
         // Get data from fixture
-        const { petId, fileName, mimeType } = testData;
+        const { petId, fileName, mimeType } = testData[0];
         const filePath = path.resolve(__dirname, `assets/${fileName}`);
 
         // Prepare file payload (Logic moved out of PetApi class)
@@ -61,7 +61,7 @@ test.describe('Pet API - Upload Image', () => {
         const petApi = new PetApi(request);
 
         // Get data from fixture
-        const { petId, fileName, mimeType } = testData;
+        const { petId, fileName, mimeType } = testData[0];
         const filePath = path.resolve(__dirname, `assets/${fileName}`);
 
         // Prepare file payload (Logic moved out of PetApi class)
@@ -78,6 +78,32 @@ test.describe('Pet API - Upload Image', () => {
             code: 200,
             type: "unknown",
             message: `additionalMetadata: null\nFile uploaded to ./images.jfif, 12229 bytes`
+        });
+    });
+
+    //1.4
+    test('Large but acceptable file (~4-5 MB)', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, fileName, mimeType } = testData[1];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, undefined, filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        console.log('API Response:', JSON.stringify(responseBody, null, 2));
+        expect(responseBody).toMatchObject({
+            code: 200,
+            type: "unknown",
+            message: `additionalMetadata: null\nFile uploaded to ./images(4-5mb).jpg, 6512976 bytes`
         });
     });
 });

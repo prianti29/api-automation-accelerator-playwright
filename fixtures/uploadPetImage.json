@@ -1,6 +1,14 @@
-{
-    "petId": 123,
-    "additionalMetadata": "Nice photo of my dog",
-    "fileName": "images.jfif",
-    "mimeType": "image/jfif"
-}
+[
+    {
+        "petId": 1,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images.jfif",
+        "mimeType": "image/jfif"
+    },
+    {
+        "petId": 2,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(4-5mb).jpg",
+        "mimeType": "image/jpg"
+    }
+]
