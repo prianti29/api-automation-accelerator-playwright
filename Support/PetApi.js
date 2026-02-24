@@ -8,7 +8,6 @@ export class PetApi {
         this.request = request;
         this.baseUrl = 'https://petstore.swagger.io/v2';
     }
-
     /**
      * Uploads an image for a pet.
      * @param {number} petId 
