@@ -6,6 +6,7 @@ import { PetApi } from '../Support/PetApi';
 import testData from '../fixtures/uploadPetImage.json';
 
 test.describe('Pet API - Upload Image', () => {
+    //1.1
     test('Upload valid image with metadata', async ({ request }) => {
         const petApi = new PetApi(request);
 
@@ -25,9 +26,57 @@ test.describe('Pet API - Upload Image', () => {
 
         expect(responseBody).toMatchObject({
             code: 200,
-            type: "unknown"
+            type: "unknown",
+            message: "additionalMetadata: null\nFile uploaded to ./images.jfif, 12229 bytes"
         });
-        expect(responseBody.message).toContain(`additionalMetadata: ${additionalMetadata}`);
-        expect(responseBody.message).toContain("File uploaded to");
     });
+
+    //1.2
+    test('No metadata (additionalMetadata - optional field empty)', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, fileName } = testData;
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, "", filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+        console.log('API Response:', JSON.stringify(responseBody, null, 2));
+        expect(responseBody).toMatchObject({
+            code: 200,
+            type: "unknown",
+            message: "additionalMetadata: null\nFile uploaded to ./images.jfif, 12229 bytes"
+        });
+    });
+
+    // //1.3
+    // test('No metadata (additionalMetadata - optional field empty)', async ({ request }) => {
+    //     const petApi = new PetApi(request);
+
+    //     // Get data from fixture
+    //     const { petId, fileName, mimeType } = testData;
+    //     const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+    //     // Prepare file payload (Logic moved out of PetApi class)
+    //     const filePayload = {
+    //         name: fileName,
+    //         mimeType: mimeType,
+    //         buffer: fs.readFileSync(filePath),
+    //     };
+    //     const response = await petApi.uploadImage(petId, "", filePayload);
+    //     expect(response.status()).toBe(200);
+    //     const responseBody = await response.json();
+
+    //     expect(responseBody).toMatchObject({
+    //         code: 200,
+    //         type: "unknown",
+    //         message: "additionalMetadata: null\nFile uploaded to ./codeforce.png, 1142 bytes"
+    //     });
+    // });
 });
