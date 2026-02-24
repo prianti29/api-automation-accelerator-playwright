@@ -15,11 +15,13 @@ export class PetApi {
      * @param {{ name: string, mimeType: string, buffer: Buffer }} filePayload
      */
     async uploadImage(petId, additionalMetadata, filePayload) {
+        const multipart = {
+            file: filePayload,
+            ...(additionalMetadata !== undefined && { additionalMetadata })
+        };
+
         return await this.request.post(`${this.baseUrl}/pet/${petId}/uploadImage`, {
-            multipart: {
-                additionalMetadata: additionalMetadata,
-                file: filePayload,
-            }
+            multipart
         });
     }
 }
