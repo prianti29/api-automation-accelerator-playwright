@@ -10,5 +10,22 @@
         "additionalMetadata": "Nice photo of my dog",
         "fileName": "images(4-5mb).jpg",
         "mimeType": "image/jpg"
+    },
+    {
+        "petId": 999999999999999999,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(4-5mb).jpg",
+        "mimeType": "image/jpg"
+    },
+    {
+        "petId": "abc",
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(4-5mb).jpg",
+        "mimeType": "image/jpg"
+    },
+    {
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(4-5mb).jpg",
+        "mimeType": "image/jpg"
     }
 ]

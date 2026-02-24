@@ -99,11 +99,82 @@ test.describe('Pet API - Upload Image', () => {
         expect(response.status()).toBe(200);
         const responseBody = await response.json();
 
-        console.log('API Response:', JSON.stringify(responseBody, null, 2));
         expect(responseBody).toMatchObject({
             code: 200,
             type: "unknown",
             message: `additionalMetadata: null\nFile uploaded to ./images(4-5mb).jpg, 6512976 bytes`
+        });
+    });
+
+    //1.5
+    test('Non-existent petId', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, fileName, mimeType } = testData[2];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, undefined, filePayload);
+        expect(response.status()).toBe(404);
+        const responseBody = await response.json();
+        expect(responseBody).toMatchObject({
+            code: 404,
+            type: "unknown",
+            message: `Pet not found`
+        });
+    });
+
+    //1.6
+    test('String value on petID', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, fileName, mimeType } = testData[3];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, undefined, filePayload);
+        expect(response.status()).toBe(404);
+        const responseBody = await response.json();
+        expect(responseBody).toMatchObject({
+            code: 404,
+            type: "unknown",
+            message: "java.lang.NumberFormatException: For input string: \"abc\""
+        });
+    });
+
+    //1.7
+    test('Missing petID', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, fileName, mimeType } = testData[4];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, undefined, filePayload);
+        expect(response.status()).toBe(404);
+        const responseBody = await response.json();
+        expect(responseBody).toMatchObject({
+            code: 404,
+            type: "unknown",
+            message: "java.lang.NumberFormatException: For input string: \"undefined\""
         });
     });
 });
