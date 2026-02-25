@@ -16,7 +16,7 @@ export class PetApi {
      */
     async uploadImage(petId, additionalMetadata, filePayload) {
         const multipart = {
-            file: filePayload,
+            ...(filePayload !== undefined && { file: filePayload }),
             ...(additionalMetadata !== undefined && { additionalMetadata })
         };
 

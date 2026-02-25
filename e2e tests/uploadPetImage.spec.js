@@ -177,4 +177,26 @@ test.describe('Pet API - Upload Image', () => {
             message: "java.lang.NumberFormatException: For input string: \"undefined\""
         });
     });
+
+    //1.8
+    test('No file part sent (empty multipart)', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId } = testData[1];
+
+        // Sending no file part by passing undefined for filePayload
+        const response = await petApi.uploadImage(petId, undefined, undefined);
+
+        // Note: The user mentioned getting 500 in Postman. 
+        // If the API returns 500, this test will (correctly) fail if we expect 400.
+        expect(response.status()).toBe(400);
+        const responseBody = await response.json();
+        console.log(responseBody);
+        expect(responseBody).toMatchObject({
+            code: 400,
+            type: 'unknown',
+            message: 'org.jvnet.mimepull.MIMEParsingException: Missing start boundary'
+        });
+    });
 });
