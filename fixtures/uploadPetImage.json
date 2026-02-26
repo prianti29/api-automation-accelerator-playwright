@@ -42,5 +42,20 @@
         "petId": 1,
         "additionalMetadata": "Nice photo of my dog",
         "fileName": "images(15mb).jpg"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "!@#$%^&*()_+",
+        "fileName": "images(15mb).jpg"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "こんにちは 图片",
+        "fileName": "images(15mb).jpg"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileNames": ["images.jfif", "images(0byte).jpg"]
     }
 ]

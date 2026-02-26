@@ -268,5 +268,76 @@ test.describe('Pet API - Upload Image', () => {
             code: 200
         });
     });
+
+    //1.12
+    test('Special characters in metadata', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, additionalMetadata, fileName, mimeType } = testData[8];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, additionalMetadata, filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        expect(responseBody).toMatchObject({
+            code: 200
+        });
+    });
+
+    //1.13
+    test('Unicode / non-ASCII metadata', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, additionalMetadata, fileName, mimeType } = testData[9];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, additionalMetadata, filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        expect(responseBody).toMatchObject({
+            code: 200
+        });
+    });
+
+    //1.14
+    test('Multiple files in one request', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, additionalMetadata, fileNames } = testData[10];
+
+        // Prepare an array of file payloads
+        const filePayloads = fileNames.map(name => {
+            const filePath = path.resolve(__dirname, `assets/${name}`);
+            return {
+                name: name,
+                buffer: fs.readFileSync(filePath)
+            };
+        });
+
+        const response = await petApi.uploadImage(petId, additionalMetadata, filePayloads);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        expect(responseBody).toMatchObject({
+            code: 200
+        });
+    });
 });
 
