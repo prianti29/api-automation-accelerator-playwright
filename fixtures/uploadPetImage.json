@@ -27,5 +27,10 @@
         "additionalMetadata": "Nice photo of my dog",
         "fileName": "images(4-5mb).jpg",
         "mimeType": "image/jpg"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "sample1.txt"
     }
 ]
