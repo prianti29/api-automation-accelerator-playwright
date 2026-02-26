@@ -32,5 +32,15 @@
         "petId": 1,
         "additionalMetadata": "Nice photo of my dog",
         "fileName": "sample1.txt"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(0byte).jpg"
+    },
+    {
+        "petId": 1,
+        "additionalMetadata": "Nice photo of my dog",
+        "fileName": "images(15mb).jpg"
     }
 ]

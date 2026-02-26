@@ -215,11 +215,58 @@ test.describe('Pet API - Upload Image', () => {
             buffer: fs.readFileSync(filePath),
         };
         const response = await petApi.uploadImage(petId, additionalMetadata, filePayload);
-        expect(response.status()).toBe(200);
+        expect(response.status()).toBe(400);
         const responseBody = await response.json();
 
         expect(responseBody).toMatchObject({
             code: 400
         });
     });
+
+    //1.10
+    test('Zero-byte / empty file', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, additionalMetadata, fileName, mimeType } = testData[6];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, additionalMetadata, filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        expect(responseBody).toMatchObject({
+            code: 200
+        });
+    });
+
+    //1.11
+    test('Very large file (>10-20 MB)', async ({ request }) => {
+        const petApi = new PetApi(request);
+
+        // Get data from fixture
+        const { petId, additionalMetadata, fileName, mimeType } = testData[7];
+        const filePath = path.resolve(__dirname, `assets/${fileName}`);
+
+        // Prepare file payload (Logic moved out of PetApi class)
+        const filePayload = {
+            name: fileName,
+            mimeType: mimeType,
+            buffer: fs.readFileSync(filePath),
+        };
+        const response = await petApi.uploadImage(petId, additionalMetadata, filePayload);
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+
+        expect(responseBody).toMatchObject({
+            code: 200
+        });
+    });
 });
+
