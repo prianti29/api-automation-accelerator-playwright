@@ -39,3 +39,15 @@ export async function uploadImage(request, petId, additionalMetadata, filePayloa
           multipart
      });
 }
+
+/**
+ * Adds a new pet to the store.
+ * @param {import('@playwright/test').APIRequestContext} request
+ * @param {object} petData 
+ * @param {string} baseUrl
+ */
+export async function addNewPet(request, petData, baseUrl = 'https://petstore.swagger.io/v2') {
+     return await request.post(`${baseUrl}${PET}`, {
+          data: petData
+     });
+}

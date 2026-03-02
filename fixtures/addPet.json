@@ -1,0 +1,20 @@
+[
+     {
+          "id": 1,
+          "category": {
+          "id": 1,
+          "name": "Dog"
+          },
+          "name": "doggie",
+          "photoUrls": [
+               "https://www.shutterstock.com/image-photo/traveler-woman-arms-raised-triumph-on-2457990309"
+          ],
+          "tags": [
+               {
+                    "id": 1,
+                    "name": "tag1"
+               }
+          ],
+          "status": "available"
+     }
+]  
