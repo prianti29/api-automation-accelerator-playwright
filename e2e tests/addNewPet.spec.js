@@ -1,45 +1,250 @@
 
 import { test, expect } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
-import { uploadImage, addNewPet } from '../support/command';
+import { addNewPet } from '../support/command';
 import testData from '../fixtures/addPet.json';
 
 test.describe('Pet API - Add New Pet', () => {
 
-     //1.1
+     //2.1
      test('Add with valid request body', async ({ request }) => {
           const petData = testData[0];
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
-
           expect(responseBody).toMatchObject(petData);
      });
 
-     //1.2
-     test('Upload valid image with metadata', async ({ request }) => {
-          // Get data from fixture and set image details
-          const { id: petId } = testData[0];
-          const additionalMetadata = 'Nice photo of my dog';
-          const fileName = 'images.jfif';
-          const mimeType = 'image/jfif';
-          const filePath = path.resolve(__dirname, `assets/${fileName}`);
-
-          // Prepare file payload
-          const filePayload = {
-               name: fileName,
-               mimeType: mimeType,
-               buffer: fs.readFileSync(filePath),
-          };
-          const response = await uploadImage(request, petId, additionalMetadata, filePayload);
+     //2.2
+     test('Create pet with status = "pending"', async ({ request }) => {
+          const petData = testData[1];
+          petData.status = "pending";
+          const response = await addNewPet(request, petData);
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+     //2.3
+     test('Create pet with status = "sold"', async ({ request }) => {
+          const petData = testData[2];
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
 
-          expect(responseBody).toMatchObject({
-               code: 200,
-               type: "unknown",
-               message: `additionalMetadata: ${additionalMetadata}\nFile uploaded to ./images.jfif, 12229 bytes`
-          });
+     //2.4
+     test("Create with only required field", async ({ request }) => {
+          const petData = testData[3];
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.5
+     test("Create with only ID field", async ({ request }) => {
+          const petData = { id: testData[0].id };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(400);
+     });
+
+     //2.6
+     test("Create without category", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.category;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.7
+     test("Create without tags", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.tags;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.8
+     test("Create without photoUrls", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.photoUrls;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.9
+     test("Create without status", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.status;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.10
+     test("Create without category ID", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.category.id;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.11
+     test("Create without category name", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.category.name;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.12
+     test("Create without tag ID", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.tags[0].id;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.13
+     test("Create without tag name", async ({ request }) => {
+          const petData = testData[0];
+          delete petData.tags[0].name;
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.13
+     test("Create with empty array of tags", async ({ request }) => {
+          const petData = testData[0];
+          petData.tags = [];
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+     });
+
+     //2.14
+     test("Create with invalid enum of status", async ({ request }) => {
+          const petData = testData[0];
+          petData.status = "invalid";
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(400);
+     });
+
+     //2.15
+     test("Create with Empty name field", async ({ request }) => {
+          const petData = testData[0];
+          petData.name = "";
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(400);
+     });
+
+     //2.16
+     test("Create with null name field", async ({ request }) => {
+          const petData = { ...testData[0], name: null };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).not.toHaveProperty('name');
+     });
+
+     //2.17
+     test("Create with empty photoURL", async ({ request }) => {
+          const petData = { ...testData[0], photoUrls: [""] };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(400);
+     });
+
+     //2.18
+     test("Create with null ID", async ({ request }) => {
+          const petData = { ...testData[0], id: null };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(typeof responseBody.id).toBe('number');
+          const { id, ...expectedData } = petData;
+          expect(responseBody).toMatchObject(expectedData);
+     });
+
+     //2.19
+     test("Create wtih null category ID", async ({ request }) => {
+          const petData = { ...testData[0], category: { id: null } };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(typeof responseBody.category.id).toBe('number');
+          const { category: { id }, ...expectedData } = petData;
+          expect(responseBody).toMatchObject(expectedData);
+     });
+
+     //2.20
+     test("Create wtih null category name", async ({ request }) => {
+          const petData = { ...testData[0], category: { name: null } };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).not.toHaveProperty('category.name');
+     });
+
+     //2.21
+     test("Create with null photoURLs", async ({ request }) => {
+          const petData = { ...testData[0], photoUrls: [null] };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).not.toHaveProperty('photoUrls[0]');
+     });
+
+     //2.22
+     test("Create with null tag ID", async ({ request }) => {
+          const petData = { ...testData[0], tags: [{ id: null }] };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(typeof responseBody.tags[0].id).toBe('number');
+          const { tags: { id }, ...expectedData } = petData;
+          expect(responseBody).toMatchObject(expectedData);
+     });
+     //2.23
+     test("Create with null tag name", async ({ request }) => {
+          const petData = { ...testData[0], tags: [{ name: null }] };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).not.toHaveProperty('tags[0].name');
+     });
+
+     //2.24
+     test("Create with null status", async ({ request }) => {
+          const petData = { ...testData[0], status: null };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).not.toHaveProperty('status');
+     });
+
+     //2.25
+     test("Create with empty array of photoURLs", async ({ request }) => {
+          const petData = { ...testData[0], photoUrls: [] };
+          const response = await addNewPet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          // Check that it is an empty array
+          expect(responseBody.photoUrls).toEqual([]);
      });
 });
