@@ -1,7 +1,10 @@
 const Ajv = require('ajv');
 const addFormats = require('ajv-formats');
 
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv({
+     allErrors: true,
+     strict: false // Disable strict mode to allow 'example' and other Swagger keywords
+});
 addFormats(ajv);
 
 /**

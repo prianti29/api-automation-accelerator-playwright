@@ -29,6 +29,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
      //2.3
      test('Create pet with status = "sold"', async ({ request }) => {
@@ -37,6 +40,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.4
@@ -46,6 +52,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.5
@@ -53,6 +62,10 @@ test.describe('Pet API - Add New Pet', () => {
           const petData = { id: testData[0].id };
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(400);
+
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Error schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.6
@@ -63,6 +76,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.7
@@ -73,6 +89,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.8
@@ -83,6 +102,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.9
@@ -93,6 +115,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.10
@@ -103,6 +128,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.11
@@ -113,6 +141,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.12
@@ -123,16 +154,22 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.13
      test("Create without tag name", async ({ request }) => {
-          const petData = testData[0];
+          const petData = JSON.parse(JSON.stringify(testData[0]));
           delete petData.tags[0].name;
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.13
@@ -143,6 +180,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.14
@@ -164,6 +204,10 @@ test.describe('Pet API - Add New Pet', () => {
           petData.name = "";
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(400);
+
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Error schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.16
@@ -173,6 +217,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).not.toHaveProperty('name');
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.17
@@ -180,6 +227,10 @@ test.describe('Pet API - Add New Pet', () => {
           const petData = { ...testData[0], photoUrls: [""] };
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(400);
+
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Error schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.18
@@ -191,6 +242,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(typeof responseBody.id).toBe('number');
           const { id, ...expectedData } = petData;
           expect(responseBody).toMatchObject(expectedData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.19
@@ -202,6 +256,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(typeof responseBody.category.id).toBe('number');
           const { category: { id }, ...expectedData } = petData;
           expect(responseBody).toMatchObject(expectedData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.20
@@ -211,6 +268,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).not.toHaveProperty('category.name');
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.21
@@ -220,6 +280,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).not.toHaveProperty('photoUrls[0]');
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.22
@@ -231,6 +294,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(typeof responseBody.tags[0].id).toBe('number');
           const { tags: { id }, ...expectedData } = petData;
           expect(responseBody).toMatchObject(expectedData);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
      //2.23
      test("Create with null tag name", async ({ request }) => {
@@ -239,6 +305,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).not.toHaveProperty('tags[0].name');
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.24
@@ -248,6 +317,9 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).not.toHaveProperty('status');
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.25
@@ -258,5 +330,8 @@ test.describe('Pet API - Add New Pet', () => {
           const responseBody = await response.json();
           // Check that it is an empty array
           expect(responseBody.photoUrls).toEqual([]);
+
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 });
