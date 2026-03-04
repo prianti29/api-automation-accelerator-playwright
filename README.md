@@ -27,11 +27,11 @@ npx playwright show-report
 ```
 
 ## Project Structure
-The project follows a clean, modular architecture:
-- `e2e tests/`: Contains all API test specifications (e.g., `uploadPetImage.spec.js`).
+The project follows a modular, scalable architecture:
+- `e2e tests/`: Contains all API test specifications.
+- `schemas/`: JSON schemas used for response contract validation (synced with Swagger).
 - `fixtures/`: Data files used by tests (JSON, images, etc.).
-- `support/`: Helper classes and API client wrappers (e.g., `PetApi.js`).
-- `tests-examples/`: Playwright's default examples for reference.
+- `Support/`: Utility helpers including `schemaValidator.js` and common commands.
 - `playwright.config.js`: Centralized configuration for the test runner.
 
 ## API Reference
@@ -39,11 +39,12 @@ This project interacts with the **Swagger Petstore API**:
 - **Swagger UI**: [https://petstore.swagger.io/](https://petstore.swagger.io/)
 - **Base URL**: `https://petstore.swagger.io/v2`
 
-## Features
-- **Page Object Model (POM)**: Specialized API client classes for cleaner tests.
-- **Fixture-Driven Testing**: Separation of test logic and test data.
+## Key Features
+- **Contract Testing (Schema Validation)**: Uses `Ajv` to validate API responses against JSON schemas extracted from Swagger.
+- **Fixture-Driven Testing**: Separation of test logic and test data for better maintainability.
+- **Support Utility**: Centralized `schemaValidator.js` for reusable assertion blocks.
 - **Automated Reporting**: Detailed HTML reports for every test run.
-- **Modern Javascript**: Uses ES Modules and async/await for readable code.
+- **Deep Data Isolation**: Best practices using deep cloning for test data to prevent state interference.
 
 ---
 Built using Playwright.
