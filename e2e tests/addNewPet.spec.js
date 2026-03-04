@@ -2,6 +2,9 @@
 import { test, expect } from '@playwright/test';
 import { addNewPet } from '../support/command';
 import testData from '../fixtures/addPet.json';
+import { validateSchema } from '../Support/schemaValidator';
+import petSchema from '../schemas/petSchema.json';
+import errorSchema from '../schemas/errorSchema.json';
 
 test.describe('Pet API - Add New Pet', () => {
 
@@ -12,6 +15,10 @@ test.describe('Pet API - Add New Pet', () => {
           expect(response.status()).toBe(200);
           const responseBody = await response.json();
           expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.2
@@ -144,6 +151,11 @@ test.describe('Pet API - Add New Pet', () => {
           petData.status = "invalid";
           const response = await addNewPet(request, petData);
           expect(response.status()).toBe(400);
+
+          const responseBody = await response.json();
+          // Schema validation for error
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Error schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 
      //2.15
