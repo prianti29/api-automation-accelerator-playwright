@@ -1,50 +1,110 @@
 # API Automation Accelerator (Playwright)
 
-A premium API testing framework built with Playwright, designed for speed, reliability, and maintainability. This project focuses on automating testing for the Petstore API.
+[![Playwright](https://img.shields.io/badge/Playwright-1.58.2-28a745.svg)](https://playwright.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-v16+-blue.svg)](https://nodejs.org/)
+[![Ajv](https://img.shields.io/badge/Ajv-Schema--Validation-orange.svg)](https://ajv.js.org/)
 
-## Getting Started
+A premium API testing accelerator built with **Playwright**, engineered for high-performance, maintainable, and scalable API automation. This project provides a robust foundation for testing the [Swagger Petstore API](https://petstore.swagger.io/) with a focus on contract validation and modular design.
+
+## Key Features
+
+- ** Contract Testing**: Automated response validation using `Ajv` against JSON schemas synced with Swagger definitions.
+- ** Modular Architecture**: Clean separation of concerns with dedicated support utilities, fixtures, and schema models.
+- ** Detailed Reporting**: Rich HTML reports with trace capabilities for debugging.
+- ** Advanced Patterns**: 
+  - Deep cloning for test data isolation.
+  - Reusable API command wrappers (`Support/command.js`).
+  - Strict schema validation with custom format support via `ajv-formats`.
+- ** Parallel Execution**: Optimized for speed using Playwright's parallel execution engine.
+
+---
+
+## Project Structure
+
+```mermaid
+graph TD
+    A[Root] --> B[e2e tests]
+    A --> C[Support]
+    A --> D[schemas]
+    A --> E[fixtures]
+    B --> B1[addNewPet.spec.js]
+    B --> B2[uploadPetImage.spec.js]
+    C --> C1[command.js - API Wrappers]
+    C --> C2[schemaValidator.js]
+    D --> D1[petSchema.json]
+    D --> D2[orderSchema.json]
+```
+
+- **`e2e tests/`**: Contains end-to-end API test specifications.
+- **`Support/`**: Core utility layer including API command wrappers and schema validation logic.
+- **`schemas/`**: JSON Schema definitions (Draft 7) for contract validation.
+- **`fixtures/`**: Static test data (JSON) and assets (images) used in multipart uploads.
+
+---
+
+## 🏁 Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
-- npm (distributed with Node.js)
+
+- **Node.js** (v16.x or higher)
+- **npm** (v7.x or higher)
 
 ### Installation
-1. Clone the repository.
-2. Install dependencies:
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd api-automation-accelerator-playwright
+   ```
+
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
+---
+
 ## Running Tests
-To execute the API tests, use the following command:
+
+### Execute All Tests
 ```bash
-npx playwright test
+npm test
 ```
 
-To view the HTML report after tests complete:
+### Run Specific Test File
 ```bash
-npx playwright show-report
+npx playwright test addNewPet.spec.js
 ```
 
-## Project Structure
-The project follows a modular, scalable architecture:
-- `e2e tests/`: Contains all API test specifications.
-- `schemas/`: JSON schemas used for response contract validation (synced with Swagger).
-- `fixtures/`: Data files used by tests (JSON, images, etc.).
-- `Support/`: Utility helpers including `schemaValidator.js` and common commands.
-- `playwright.config.js`: Centralized configuration for the test runner.
+### Run Tests in UI Mode
+```bash
+npm run test:ui
+```
 
-## API Reference
-This project interacts with the **Swagger Petstore API**:
-- **Swagger UI**: [https://petstore.swagger.io/](https://petstore.swagger.io/)
-- **Base URL**: `https://petstore.swagger.io/v2`
-
-## Key Features
-- **Contract Testing (Schema Validation)**: Uses `Ajv` to validate API responses against JSON schemas extracted from Swagger.
-- **Fixture-Driven Testing**: Separation of test logic and test data for better maintainability.
-- **Support Utility**: Centralized `schemaValidator.js` for reusable assertion blocks.
-- **Automated Reporting**: Detailed HTML reports for every test run.
-- **Deep Data Isolation**: Best practices using deep cloning for test data to prevent state interference.
+### View Test Report
+```bash
+npm run report
+```
 
 ---
-Built using Playwright.
+
+## Technical Deep Dive
+
+### Schema Validation
+The project uses `Ajv` to ensure that API responses strictly adhere to the expected structure. This approach catches breaking changes in the API response early.
+
+```javascript
+// Example usage in Support/schemaValidator.js
+const { validateSchema } = require('./schemaValidator');
+const schema = require('../schemas/petSchema.json');
+
+const result = validateSchema(schema, responseBody);
+expect(result.valid).toBe(true);
+```
+
+### Multipart File Uploads
+We handle complex multipart requests for image uploads with custom metadata support, located in `Support/command.js`.
+
+---
+
+Happy Testing!
