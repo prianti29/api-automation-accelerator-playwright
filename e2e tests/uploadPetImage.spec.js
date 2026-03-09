@@ -2,9 +2,9 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
-import { uploadImage } from '../support/command';
+import { uploadImage } from '../Support/command';
 import testData from '../fixtures/uploadPetImage.json';
-import { validateSchema } from '../support/schemaValidator';
+import { validateSchema } from '../Support/schemaValidator';
 import errorSchema from '../schemas/errorSchema.json';
 
 test.describe('Pet API - Upload Image', () => {

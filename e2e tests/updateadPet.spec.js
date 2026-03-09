@@ -1,10 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { updatePet } from '../support/command';
+import { updatePet } from '../Support/command';
 import testData from '../fixtures/updatePet.json';
-import { validateSchema } from '../support/schemaValidator';
+import { validateSchema } from '../Support/schemaValidator';
 import petSchema from '../schemas/petSchema.json';
-import errorSchema from '../schemas/errorSchema.json';
-
 
 test.describe('Pet API - Update Pet', () => {
 
