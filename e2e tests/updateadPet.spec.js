@@ -3,6 +3,7 @@ import { updatePet } from '../Support/command';
 import testData from '../fixtures/updatePet.json';
 import { validateSchema } from '../Support/schemaValidator';
 import petSchema from '../schemas/petSchema.json';
+import errorSchema from '../schemas/errorSchema.json';
 
 test.describe('Pet API - Update Pet', () => {
 
@@ -16,6 +17,16 @@ test.describe('Pet API - Update Pet', () => {
 
           // Schema validation
           const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.2
+     test('Update pet name', async ({ request }) => {
+          const petData = testData[1];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(404);
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
 });
