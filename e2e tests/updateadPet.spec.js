@@ -29,4 +29,24 @@ test.describe('Pet API - Update Pet', () => {
           const validation = validateSchema(errorSchema, responseBody);
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
+
+     //3.3
+     test('Update photoURLs', async ({ request }) => {
+          const petData = testData[2];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(404);
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.4
+     test('Update ID', async ({ request }) => {
+          const petData = testData[3];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(400);
+          const responseBody = await response.json();
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
 });

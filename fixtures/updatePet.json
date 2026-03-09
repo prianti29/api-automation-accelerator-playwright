@@ -24,5 +24,14 @@
   },
   {
     "name": "test"
+  },
+  {
+    "photoUrls": [
+      "string",
+      "string"
+    ]
+  },
+  {
+    "id": 6541
   }
 ]
