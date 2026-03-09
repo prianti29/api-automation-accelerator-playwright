@@ -1,8 +1,7 @@
-
 import { test, expect } from '@playwright/test';
 import { addNewPet } from '../support/command';
 import testData from '../fixtures/addPet.json';
-import { validateSchema } from '../Support/schemaValidator';
+import { validateSchema } from '../support/schemaValidator';
 import petSchema from '../schemas/petSchema.json';
 import errorSchema from '../schemas/errorSchema.json';
 

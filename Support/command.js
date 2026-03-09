@@ -51,3 +51,15 @@ export async function addNewPet(request, petData, baseUrl = 'https://petstore.sw
           data: petData
      });
 }
+
+/**
+ * Updates an existing pet in the store.
+ * @param {import('@playwright/test').APIRequestContext} request
+ * @param {object} petData 
+ * @param {string} baseUrl
+ */
+export async function updatePet(request, petData, baseUrl = 'https://petstore.swagger.io/v2') {
+     return await request.put(`${baseUrl}${PET}`, {
+          data: petData
+     });
+}

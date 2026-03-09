@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
 import { uploadImage } from '../support/command';
-import testData from '../fixtures/uploadPetImage.json';
+import testData from './uploadPetImage.json';
 import { validateSchema } from '../support/schemaValidator';
 import errorSchema from '../schemas/errorSchema.json';
 
