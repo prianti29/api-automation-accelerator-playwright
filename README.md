@@ -8,7 +8,7 @@ A premium API testing accelerator built with **Playwright**, engineered for high
 
 ## Key Features
 
-- ** Contract Testing**: Automated response validation using `Ajv` against JSON schemas synced with Swagger definitions.
+- **Contract Testing**: Automated response validation using `Ajv` against JSON schemas synced with Swagger definitions.
 - ** Modular Architecture**: Clean separation of concerns with dedicated support utilities, fixtures, and schema models.
 - ** Detailed Reporting**: Rich HTML reports with trace capabilities for debugging.
 - ** Advanced Patterns**: 
@@ -23,22 +23,30 @@ A premium API testing accelerator built with **Playwright**, engineered for high
 
 ```mermaid
 graph TD
-    A[Root] --> B[e2e tests]
+    A[Root] --> B["e2e tests"]
     A --> C[Support]
     A --> D[schemas]
     A --> E[fixtures]
     B --> B1[addNewPet.spec.js]
     B --> B2[uploadPetImage.spec.js]
+    B --> B3[updateadPet.spec.js]
+    B --> B4[assets/]
     C --> C1[command.js - API Wrappers]
     C --> C2[schemaValidator.js]
+    C --> C3[apiConstants.js]
     D --> D1[petSchema.json]
     D --> D2[orderSchema.json]
+    D --> D3[userSchema.json]
+    D --> D4[errorSchema.json]
+    E --> E1[addPet.json]
+    E --> E2[updatePet.json]
+    E --> E3[uploadPetImage.json]
 ```
 
-- **`e2e tests/`**: Contains end-to-end API test specifications.
-- **`Support/`**: Core utility layer including API command wrappers and schema validation logic.
-- **`schemas/`**: JSON Schema definitions (Draft 7) for contract validation.
-- **`fixtures/`**: Static test data (JSON) and assets (images) used in multipart uploads.
+- **`e2e tests/`**: Contains end-to-end API test specifications (+ `assets/` for upload binaries).
+- **`Support/`**: Core utility layer including API command wrappers, schema validation logic, and global constants.
+- **`schemas/`**: JSON Schema definitions (Draft 7) for contract validation (Pet, Order, User, Error).
+- **`fixtures/`**: Static test data (JSON) used for request payloads.
 
 ---
 
