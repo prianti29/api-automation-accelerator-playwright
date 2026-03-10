@@ -157,4 +157,17 @@ test.describe('Pet API - Update Pet', () => {
           const validation = validateSchema(petSchema, responseBody);
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
+
+     //3.14
+     test('Update with invalid photo URL', async ({ request }) => {
+          const petData = testData[13];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(400);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(errorSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
 });
