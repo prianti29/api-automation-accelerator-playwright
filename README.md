@@ -29,7 +29,7 @@ graph TD
     A --> E[fixtures]
     B --> B1[addNewPet.spec.js]
     B --> B2[uploadPetImage.spec.js]
-    B --> B3[updateadPet.spec.js]
+    B --> B3[updatedPet.spec.js]
     B --> B4[assets/]
     C --> C1[command.js - API Wrappers]
     C --> C2[schemaValidator.js]
