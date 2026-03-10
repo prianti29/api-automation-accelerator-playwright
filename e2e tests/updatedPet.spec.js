@@ -105,4 +105,56 @@ test.describe('Pet API - Update Pet', () => {
           const validation = validateSchema(petSchema, responseBody);
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
      });
+
+     //3.10
+     test('Update category ID with required fields', async ({ request }) => {
+          const petData = testData[9];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.11
+     test('Update category name with required fields', async ({ request }) => {
+          const petData = testData[10];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.12
+     test('Update tags ID with required fields', async ({ request }) => {
+          const petData = testData[11];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.13
+     test('Update tags name with required fields', async ({ request }) => {
+          const petData = testData[12];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          expect(responseBody).toMatchObject(petData);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
 });
