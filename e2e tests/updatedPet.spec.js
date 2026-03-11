@@ -210,4 +210,106 @@ test.describe('Pet API - Update Pet', () => {
           // Ensure the response follows the schema structure and log any mismatches
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(false);
      });
+
+     //3.17
+     test('Update with null ID', async ({ request }) => {
+          const petData = testData[16];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Ensure the response follows the schema structure and log any mismatches
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.18
+     test('Update with null category name', async ({ request }) => {
+          const petData = testData[17];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Destructure to separate the null 'name' from the inner 'category' object
+          const { category: { name, ...categoryData }, ...expectedData } = petData;
+
+          // Verify that the response matches the expected data (excluding the null field)
+          expect(responseBody).toMatchObject({
+               ...expectedData,
+               category: categoryData
+          });
+
+          // Verify that the 'name' field inside category is not present in the response
+          expect(responseBody.category?.name).toBeUndefined();
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Since category name isn't marked as 'required' in your schema, this should be valid
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.19
+     test('Update with null tags ID', async ({ request }) => {
+          const petData = testData[18];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Destructure to separate the null 'id' from the first tag in the array
+          const { tags: [{ id, ...firstTagData }, ...otherTags], ...expectedData } = petData;
+
+          // Verify that the response matches the expected data (excluding the null field)
+          expect(responseBody).toMatchObject({
+               ...expectedData,
+               tags: [firstTagData, ...otherTags]
+          });
+
+          // Verify that the 'id' field in the first tag returns 0 (API default for null integer)
+          expect(responseBody.tags[0]?.id).toBe(0);
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Tags ID is optional in your schema, so this should pass
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.20
+     test('Update with null tags name', async ({ request }) => {
+          const petData = testData[19];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Destructure to separate the null 'name' from the first tag in the array
+          const { tags: [{ name, ...firstTagData }, ...otherTags], ...expectedData } = petData;
+
+          // Verify that the response matches the expected data (excluding the null field)
+          expect(responseBody).toMatchObject({
+               ...expectedData,
+               tags: [firstTagData, ...otherTags]
+          });
+
+          // Verify that the 'name' field in the first tag is not present in the response
+          expect(responseBody.tags[0]?.name).toBeUndefined();
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Since tags name isn't marked as 'required' in your schema, this should be valid
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.21
+     test('Update with null status', async ({ request }) => {
+          const petData = testData[20];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Verify that the status field is not present in the response
+          expect(responseBody.status).toBeUndefined();
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
 });
