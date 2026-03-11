@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { updatePet } from '../Support/command';
-import testData from '../fixtures/updatePet.json';
+import testData from '../fixtures/updatePet';
 import { validateSchema } from '../Support/schemaValidator';
 import petSchema from '../schemas/petSchema.json';
 import errorSchema from '../schemas/errorSchema.json';
@@ -169,5 +169,45 @@ test.describe('Pet API - Update Pet', () => {
           // Schema validation
           const validation = validateSchema(errorSchema, responseBody);
           expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
+     });
+
+     //3.15
+     test('Update with null name', async ({ request }) => {
+          const petData = testData[14];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Create a copy of expected data without name to verify other fields
+          const { name, ...expectedData } = petData;
+          expect(responseBody).toMatchObject(expectedData);
+
+          // Verify that the name field is not present in the response
+          expect(responseBody.name).toBeUndefined();
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Ensure the response follows the schema structure and log any mismatches
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(false);
+     });
+
+     //3.16  
+     test('Update with null photoURL', async ({ request }) => {
+          const petData = testData[15];
+          const response = await updatePet(request, petData);
+          expect(response.status()).toBe(200);
+          const responseBody = await response.json();
+
+          // Create a copy of expected data without name to verify other fields
+          const { photoUrls, ...expectedData } = petData;
+          expect(responseBody).toMatchObject(expectedData);
+
+          // Verify that the photoUrls field is not present in the response
+          expect(responseBody.photoUrls).toBeUndefined();
+
+          // Schema validation
+          const validation = validateSchema(petSchema, responseBody);
+          // Ensure the response follows the schema structure and log any mismatches
+          expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(false);
      });
 });
