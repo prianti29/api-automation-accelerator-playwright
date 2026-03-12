@@ -62,3 +62,13 @@ export async function updatePet(request, petData, baseUrl = BASE_URL) {
           data: petData
      });
 }
+
+/**
+ * Finds pets by status.
+ * @param {import('@playwright/test').APIRequestContext} request
+ * @param {string} status
+ * @param {string} [baseUrl]
+ */
+export async function getPetByStatus(request, status, baseUrl = BASE_URL) {
+     return await request.get(`${baseUrl}${PET}/findByStatus?status=${status}`);
+}
