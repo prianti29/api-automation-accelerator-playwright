@@ -3,8 +3,11 @@
 [![Playwright](https://img.shields.io/badge/Playwright-1.58.2-28a745.svg)](https://playwright.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-v16+-blue.svg)](https://nodejs.org/)
 [![Ajv](https://img.shields.io/badge/Ajv-Schema--Validation-orange.svg)](https://ajv.js.org/)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-A premium API testing accelerator built with **Playwright**, engineered for high-performance, maintainable, and scalable API automation. This project provides a robust foundation for testing the [Swagger Petstore API](https://petstore.swagger.io/) with a focus on contract validation and modular design.
+A premium API testing accelerator built with **Playwright**, engineered for high-performance, maintainable, and scalable API automation. This project provides a robust foundation for testing the [Swagger Petstore API](https://petstore.swagger.io/) with a focus on contract validation, modular design, and developer experience.
+
+---
 
 ## Key Features
 
@@ -15,10 +18,28 @@ A premium API testing accelerator built with **Playwright**, engineered for high
   - Deep cloning for test data isolation.
   - Reusable API command wrappers (`Support/command.js`).
   - Strict schema validation with custom format support via `ajv-formats`.
-- ** Parallel Execution**: Optimized for speed using Playwright's parallel execution engine.
+- **📁 Multipart Handling**: Native support for complex multipart requests (file uploads + metadata).
 
 ---
-## Getting Started
+
+## 📂 Project Architecture
+
+```text
+├── .github/              # CI/CD Workflows
+├── Support/              # Framework Core & Support Utilities
+│   ├── command.js        # API Action Wrappers (Post, Get, Put, etc.)
+│   ├── schemaValidator.js # AJV Integration for Contract Testing
+│   └── apiConstants.js   # Endpoint & Enumeration Definitions
+├── e2e tests/            # Functional Test Suites
+├── fixtures/             # Static & Dynamic Test Data
+├── schemas/              # JSON Schema Definitions (Contract Models)
+├── playwright.config.js  # Framework Configuration
+└── package.json          # Dependency & Script Management
+```
+
+---
+
+## 🛠️ Getting Started
 
 ### Prerequisites
 
@@ -52,7 +73,7 @@ npm test
 npx playwright test addNewPet.spec.js
 ```
 
-### Run Tests in UI Mode
+### Run Tests in UI Mode (Developer Experience)
 ```bash
 npm run test:ui
 ```
@@ -78,9 +99,19 @@ const result = validateSchema(schema, responseBody);
 expect(result.valid).toBe(true);
 ```
 
-### Multipart File Uploads
-We handle complex multipart requests for image uploads with custom metadata support, located in `Support/command.js`.
-
 ---
+
+## Reporting & Analytics
+
+Every test run generates a comprehensive HTML report. To view the latest results, run:
+```bash
+npm run report
+```
+The report includes:
+- Test status (Pass/Fail/Skipped)
+- Execution time
+- Detailed request/response logs
+- Error stack traces
+
 
 Happy Testing!
