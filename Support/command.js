@@ -1,4 +1,4 @@
-import { PET } from './apiConstants';
+import { PET, INVENTORY } from './apiConstants';
 
 const BASE_URL = 'https://petstore.swagger.io/v2';
 
@@ -58,3 +58,6 @@ export async function getPetByFirstAvailableID(request, status, baseUrl = BASE_U
     return statusResponse;
 }
 
+export async function getInventory(request, baseUrl = BASE_URL) {
+     return await request.get(`${baseUrl}${INVENTORY}`);
+}

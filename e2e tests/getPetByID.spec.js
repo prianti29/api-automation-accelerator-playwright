@@ -6,7 +6,7 @@ import petSchema from '../schemas/petSchema.json';
 import errorSchema from '../schemas/errorSchema.json';
 
 test.describe('Pet API - Get Pet By ID', () => {
-    //4.1
+    //5.1
     test('Get pet by valid ID', async ({ request }) => {
         const response = await getPetByFirstAvailableID(request, "available");
         expect(response.status()).toBe(200);
@@ -15,7 +15,7 @@ test.describe('Pet API - Get Pet By ID', () => {
         expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
     });
 
-    //4.2
+    //5.2
     test('Get with invalid ID', async ({ request }) => {
         const response = await getPetByID(request, "invalid");
         expect(response.status()).toBe(404);
@@ -24,7 +24,7 @@ test.describe('Pet API - Get Pet By ID', () => {
         expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
     });
 
-    //4.3
+    //5.3
     test('Get with null ID', async ({ request }) => {
         const response = await getPetByID(request, null);
         expect(response.status()).toBe(404);
@@ -33,7 +33,7 @@ test.describe('Pet API - Get Pet By ID', () => {
         expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
     });
 
-    //4.4
+    //5.4
     test('Get with undefined ID', async ({ request }) => {
         const response = await getPetByID(request, undefined);
         expect(response.status()).toBe(404);
@@ -42,7 +42,7 @@ test.describe('Pet API - Get Pet By ID', () => {
         expect(validation.valid, `Schema validation errors: ${validation.errors.join(', ')}`).toBe(true);
     });
 
-    //4.5
+    //5.5
     test('Get with empty ID', async ({ request }) => {
         const response = await getPetByID(request, "");
         expect(response.status()).toBe(405);
