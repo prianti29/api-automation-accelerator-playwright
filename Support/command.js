@@ -2,25 +2,12 @@ import { PET } from './apiConstants';
 
 const BASE_URL = 'https://petstore.swagger.io/v2';
 
-/**
- * Common configuration for multipart file upload.
- * @param {object} file 
- * @returns {object}
- */
 const mapFileToMultipart = (file) => ({
      name: file.name,
      buffer: file.buffer,
      mimeType: file.mimeType || 'application/octet-stream'
 });
 
-/**
- * Uploads an image for a pet.
- * @param {import('@playwright/test').APIRequestContext} request
- * @param {number} petId 
- * @param {string} [additionalMetadata] 
- * @param {{ name: string, mimeType?: string, buffer: Buffer } | Array<{ name: string, mimeType?: string, buffer: Buffer }>} [filePayload]
- * @param {string} [baseUrl]
- */
 export async function uploadImage(request, petId, additionalMetadata, filePayload, baseUrl = BASE_URL) {
      const multipart = {};
 
@@ -39,36 +26,35 @@ export async function uploadImage(request, petId, additionalMetadata, filePayloa
      return await request.post(`${baseUrl}${PET}/${petId}/uploadImage`, { multipart });
 }
 
-/**
- * Adds a new pet to the store.
- * @param {import('@playwright/test').APIRequestContext} request
- * @param {object} petData 
- * @param {string} [baseUrl]
- */
+
 export async function addNewPet(request, petData, baseUrl = BASE_URL) {
      return await request.post(`${baseUrl}${PET}`, {
           data: petData
      });
 }
 
-/**
- * Updates an existing pet in the store.
- * @param {import('@playwright/test').APIRequestContext} request
- * @param {object} petData 
- * @param {string} [baseUrl]
- */
 export async function updatePet(request, petData, baseUrl = BASE_URL) {
      return await request.put(`${baseUrl}${PET}`, {
           data: petData
      });
 }
 
-/**
- * Finds pets by status.
- * @param {import('@playwright/test').APIRequestContext} request
- * @param {string} status
- * @param {string} [baseUrl]
- */
 export async function getPetByStatus(request, status, baseUrl = BASE_URL) {
      return await request.get(`${baseUrl}${PET}/findByStatus?status=${status}`);
 }
+
+export async function getPetByID(request, id, baseUrl = BASE_URL) {
+     return await request.get(`${baseUrl}${PET}/${id}`);
+}
+
+export async function getPetByFirstAvailableID(request, status, baseUrl = BASE_URL) {
+    const statusResponse = await getPetByStatus(request, status, baseUrl);
+    const pets = await statusResponse.json();
+    
+    if (pets && pets.length > 0) {
+        const petId = pets[0].id;
+        return await getPetByID(request, petId, baseUrl);
+    }
+    return statusResponse;
+}
+

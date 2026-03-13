@@ -10,6 +10,9 @@ export default defineConfig({
   reporter: 'html',
   use: {
     trace: 'on-first-retry',
+    extraHTTPHeaders: {
+      'Accept': 'application/json',
+    },
   },
   projects: [
     {
